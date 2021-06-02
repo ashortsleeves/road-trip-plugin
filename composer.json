@@ -1,0 +1,12 @@
+{
+    "name": "ashortsleeves/road-trip",
+    "authors": [
+        {
+            "name": "ashortsleeves",
+            "email": "ashortsleeves@gmail.com"
+        }
+    ],
+    "require": {
+        "htmlburger/carbon-fields": "^3.3"
+    }
+}
