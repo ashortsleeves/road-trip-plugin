@@ -15,6 +15,11 @@
 ?>
 <!-- one possible solution would be to put the #feature-filter in the loop and find a way to run the js function for each metafilter -->
 <div class="checkbox-wrap" id="feature-filter">
+  <span id="meta-filters"<?php foreach ($cifields['ci_meta_filters'] as $ci_meta_filter){echo " ".stlr($ci_meta_filter['title']);} ?>></span>
+
+
+
+
   <?php foreach ($cifields['ci_meta_filters'] as $ci_meta_filter): ?>
     <?php $ci_meta_array[] = $ci_meta_filter;?>
     <h2><?php echo $ci_meta_filter['title']; ?></h2>
@@ -22,7 +27,9 @@
       <?php $i = 0; ?>
       <?php foreach($ci_meta_filter['ci_filters'] as $ci_filter): ?>
         <li>
-          <input type="checkbox" name="<?php echo $ci_filter['title']; ?>" value="<?php echo strtolower(str_replace(' ', '-',$ci_meta_filter['title'])).'-'.$i; ?>" class="filter-option" checked> <?php echo $ci_filter['title']; ?>
+          <input data-filter="<?php echo stlr($ci_meta_filter['title']);?>"  type="checkbox" name="<?php echo $ci_filter['title']; ?>" value="<?php echo stlr($ci_meta_filter['title']).'-'.$i; ?>" class="filter-option filter-option-<?php echo stlr($ci_meta_filter['title']);?>"> <?php echo $ci_filter['title']; ?>
+
+          <!-- checked attribute is removed by default now -->
         </li>
         <?php $i++; ?>
       <?php endforeach; ?>
@@ -48,12 +55,14 @@
             $ci_address =  carbon_get_the_post_meta('line_1').' '.carbon_get_the_post_meta('line_2').' '.carbon_get_the_post_meta('city').' '.carbon_get_the_post_meta('state').' '.carbon_get_the_post_meta('zip');
           ?>
 
-          <option
+                    <!-- checked attribute is removed by default now so display is set to none-->
+          <option class="filtered-destination" style="display:none;"
           <?php foreach($ci_meta_array as $ci_filter):
-              $ci_metaz = carbon_get_the_post_meta(strtolower(str_replace(' ', '-',$ci_filter['title'])));
-
+              $ci_metaz = carbon_get_the_post_meta( stlr($ci_filter['title']) );
+              // echo "data-".stlr($ci_filter['title'])." ";
+              echo stlr($ci_filter['title'])." ";
               foreach($ci_metaz as $ci_meta):
-                echo "data-".strtolower(str_replace(' ', '-',$ci_filter['title']))."-".$ci_meta." ";
+                echo "data-".stlr($ci_filter['title'])."-".$ci_meta." ";
             endforeach;
           endforeach;?>
            value="<?php echo $ci_address; ?>"><?php the_title(); ?></option>

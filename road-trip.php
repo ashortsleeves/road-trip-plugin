@@ -110,6 +110,10 @@ function crb_attach_destination_filters() {
   }
 }
 
+function stlr($a) {
+  return strtolower(str_replace(' ', '-',$a));
+}
+
 //Register the Destination CPT
  add_action('init', function(){
    $labels = array(
