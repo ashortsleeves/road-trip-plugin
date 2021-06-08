@@ -49,15 +49,6 @@
           ?>
 
           <?php
-            // foreach($ci_meta_array as $ci_filter):
-            //   $ci_metaz = carbon_get_the_post_meta( stlr($ci_filter["title"]) );
-            //   foreach($ci_metaz as $ci_meta):
-            //     echo 'data-'.stlr($ci_filter["title"]).'-'.$ci_meta.' ';
-            //   endforeach;
-            // endforeach;
-          ?>
-
-          <?php
             $f_items = array();
             $f_metas = array();
             foreach($ci_meta_array as $ci_filter):

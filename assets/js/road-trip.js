@@ -23,70 +23,60 @@ $('.filter-option').each(function(){
     // (then) when an input.filter-option is checked, loop through all metafilters that are required. All available metafilters can be gathered from the #id of each ul where required="true"
     $requiredMetas = $('ul.meta-filter[data-meta-required="true"]');
 
-    if(this.checked) {
+
+    //then I want to get the value="" of every input.filter-option that is a child of the required metafilter.
+
+    $($requiredMetas).each(function() {
+      $allValues = $(this).find('.filter-option:checked');
 
 
-      //then I want to get the value="" of every input.filter-option that is a child of the required metafilter.
+      $metaDestinationFilter = "data-"+$(this).attr('id');
 
 
-      $($requiredMetas).each(function() {
-        $allValues = $(this).find('.filter-option:checked');
+      $('.filtered-destination').each(function(){
+        //for each filtered destination, check to see if its data-filters=[] array contains the specified allValue
+        var greenLightArray = [];
 
-        //this is for console.log purposes
-        $requiredMeta = $(this).attr('id');
+        //if the destinations data-filters=[] contains the specified Value, "true" is pushed to the greenLightArray, else "false" is
+        for($i = 0; $i < $allValues.length; $i++) {
+            $destinationFilters = $(this).data('filters');
+            if($allValues.length == 0) {
+              greenLightArray[$i] = false;
+            } else if($.inArray($allValues[$i].value, $destinationFilters) !== -1) {
+              greenLightArray[$i] = true;
+            } else {
+              greenLightArray[$i] = false;
+            }
 
-
-        $($allValues).each(function(){
-
-            // check the data-filters='[]' of each option.filtered-destination to see if it contains this value
-            $filteredValue = $(this).attr('value');
-
-
-
-            $('.filtered-destination').each(function() {
-              $destinationFilters = $(this).data('filters');
-
-
-              $metaDestinationFilter = "data-"+$requiredMeta;
-
-
-
-              //if (an option.filtered-destination contains a value from allValues){ it will be greenlit(return true)} else { it will return false }
-              if($.inArray($filteredValue, $destinationFilters) !== -1) {
-
-                $(this).attr($metaDestinationFilter, "true");
-              }
-
-            });
-        });
-      });
-    } else {
-      $('.filtered-destination').each(function() {
-        $destinationFilters = $(this).data('filters');
-        $metaDestinationFilter = "data-"+$requiredMeta;
-
-        $(this).attr($metaDestinationFilter, "false");
-      });
-    }
-
-
-
-// THIS CURRENTLY HIDES ALL IF SOMETHING IS UNCHECKED
-    $($requiredMetas).each(function(){
-
-
-      $finalAttr = "data-"+$(this).attr('id');
-
-      $('.filtered-destination').each(function() {
-        if($(this).attr($finalAttr)== 'true') {
-          $(this).show();
-        } else {
-          $(this).hide();
         }
+        //if a single "true" is present in the greenLightArray, the that Destination is "greenlit" for that specific metafilter
+         if($.inArray(true, greenLightArray)!== -1) {
+           $(this).attr($metaDestinationFilter, "true");
+
+         } else {
+           $(this).attr($metaDestinationFilter, "false");
+         }
       });
+    });
 
+    //finally, we check each destination to see if each required meta filter is true.
+    $('.filtered-destination').each(function(){
+      var finalShow = [];
+      for($i = 0; $i < $requiredMetas.length; $i++) {
+        $finalAttr = "data-"+$($requiredMetas[$i]).attr('id');
 
+        if($(this).attr($finalAttr) == 'true') {
+          finalShow[$i] = true;
+        } else {
+          finalShow[$i] = false;
+        }
+      }
 
+      if($.inArray(false, finalShow) !== -1) {
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
     });
   });
 });
